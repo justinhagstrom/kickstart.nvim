@@ -334,6 +334,7 @@ require('lazy').setup({
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
+  { 'vimwiki/vimwiki' },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
