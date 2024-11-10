@@ -917,6 +917,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
@@ -937,6 +938,68 @@ require('lazy').setup({
           node_incremental = '<C-space>',
           scope_incremental = '<C-s>',
           node_decremental = '<bs>',
+        },
+      },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['a='] = { query = '@assignment.outer', desc = 'Select outer part of an assignment' },
+            ['i='] = { query = '@assignment.inner', desc = 'Select inner part of an assignment' },
+            ['l='] = { query = '@assignment.lhs', desc = 'Select left hand side of an assignment' },
+            ['r='] = { query = '@assignment.rhs', desc = 'Select right hand side of an assignment' },
+
+            ['aa'] = { query = '@parameter.outer', desc = 'Select outer part of a parameter/argument' },
+            ['ia'] = { query = '@parameter.inner', desc = 'Select inner part of a parameter/argument' },
+
+            ['ai'] = { query = '@conditional.outer', desc = 'Select outer part of a conditional' },
+            ['ii'] = { query = '@conditional.inner', desc = 'Select inner part of a conditional' },
+
+            ['al'] = { query = '@loop.outer', desc = 'Select outer part of a loop' },
+            ['il'] = { query = '@loop.inner', desc = 'Select inner part of a loop' },
+
+            ['af'] = { query = '@call.outer', desc = 'Select outer part of a function call' },
+            ['if'] = { query = '@call.inner', desc = 'Select inner part of a function call' },
+
+            ['am'] = { query = '@function.outer', desc = 'Select outer part of a method/function definition' },
+            ['im'] = { query = '@function.inner', desc = 'Select inner part of a method/function definition' },
+
+            ['ac'] = { query = '@class.outer', desc = 'Select outer part of a class' },
+            ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class' },
+          },
+          selection_modes = {
+            ['@parameter.outer'] = 'v', -- charwise
+            ['@function.outer'] = 'v',
+            ['@class.outer'] = '<c-v>', -- blockwise
+          },
+          include_surrounding_whitespace = true,
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']M'] = '@function.outer',
+            [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[m'] = '@function.outer',
+            ['[['] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[M'] = '@function.outer',
+            ['[]'] = '@class.outer',
+          },
+          goto_next = {
+            [']d'] = '@conditional.outer',
+          },
+          goto_previous = {
+            ['[d'] = '@conditional.outer',
+          },
         },
       },
     },
